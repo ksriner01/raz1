@@ -29,14 +29,18 @@ namespace ContosoUniversity.Pages.Students
             }
 
             //kriner-raz2
-            var student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
-            if (student == null)
+            //This code replaces the original OnGetAsync method in order to allow enrollment data
+            //for a selected student. It does so by loading the enrollments for each student and then
+            //loading the courses for each enrollment.
+            Student = await _context.Students
+                .Include(s => s.Enrollments)
+                .ThenInclude(e => e.Course)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (Student == null)
             {
                 return NotFound();
-            }
-            else 
-            {
-                Student = student;
             }
             return Page();
         }

@@ -31,15 +31,24 @@ namespace ContosoUniversity.Pages.Students
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid)
+            //kriner-raz2
+            //Replaced the original contents of the OnPostAsync method that was created by the scaffolding process.
+            //This code creates a Student object and uses the fields to update each part of the Student object's properties,
+            //namely first name, last name, and EnrollmentDate. Then the Student is added, the change is saved, and the user
+            //is redirected to the Index page.
+            var emptyStudent = new Student();
+
+            if (await TryUpdateModelAsync<Student>(
+                emptyStudent,
+                "student",   // Prefix for form value.
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
             {
-                return Page();
+                _context.Students.Add(emptyStudent);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
             }
 
-            _context.Students.Add(Student);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            return Page();
         }
     }
 }
