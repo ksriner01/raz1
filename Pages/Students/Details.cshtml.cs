@@ -28,6 +28,7 @@ namespace ContosoUniversity.Pages.Students
                 return NotFound();
             }
 
+            //kriner-raz2
             var student = await _context.Students.FirstOrDefaultAsync(m => m.ID == id);
             if (student == null)
             {
