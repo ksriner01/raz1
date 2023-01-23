@@ -34,8 +34,10 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
+    //kriner-raz-4
+    //Removed the context.Database.EnsureCreated() line of code to begin moving forwards with migration and 
+    //away from testing.
     var context = services.GetRequiredService<SchoolContext>();
-    context.Database.EnsureCreated();
     //kriner-raz1
     //Removed the forward slashes to enable this line of code which allows the database to be initialized
     DbInitializer.Initialize(context);
