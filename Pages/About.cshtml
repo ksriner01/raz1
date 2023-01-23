@@ -1,0 +1,35 @@
+﻿@page
+<!--kriner-raz-3-->
+<!--Create the Razor Page for the About page of the ContosoUniversity webapp. This
+    About page contains student body statistics such as Enrollment dates and Student count.
+-->
+@model ContosoUniversity.Pages.AboutModel
+
+@{
+    ViewData["Title"] = "Student Body Statistics";
+}
+
+<h2>Student Body Statistics</h2>
+
+<table>
+    <tr>
+        <th>
+            Enrollment Date
+        </th>
+        <th>
+            Students
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Students)
+    {
+            <tr>
+                <td>
+                @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                </td>
+                <td>
+                @item.StudentCount
+                </td>
+            </tr>
+    }
+</table>

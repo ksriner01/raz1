@@ -1,32 +1,69 @@
 ﻿@page
 @model ContosoUniversity.Pages.Students.IndexModel
 
+<!--kriner-raz3-->
+<!--Changed the ViewData title to Students rather than Index.-->
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Students";
 }
 
-<h1>Index</h1>
+<!--kriner-raz3-->
+<!--Changed the page heading from Students rather than Index and bumped it from h1 to h2.-->
+<h2>Students</h2>
 
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<!--kriner-raz3-->
+<!--Adds a search button using the form tag helper-->
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].LastName)
+                <!--kriner-raz3-->
+                <!--Creates the hyperlink for sorting by Student name. Added
+                    asp-route-currentFilter to accomodate paging.
+                -->
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Students[0].LastName)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].FirstMidName)
+                @Html.DisplayNameFor(model => model.Students[0].FirstMidName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].EnrollmentDate)
+                <!--kriner-raz3-->
+                <!--Creates the hyperlink for sorting by Date. Added
+                    asp-route-currentFilter to accomodate paging.
+                -->
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Students[0].EnrollmentDate)
+                </a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Student) {
+        <!--kriner-raz3-->
+        <!--Added the foreach statement so that the code in within the statement
+            executes for every item in the Students model.
+        -->
+        @foreach (var item in Model.Students)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
@@ -46,3 +83,27 @@
 }
     </tbody>
 </table>
+
+<!--kriner-raz-3-->
+<!--This code shows the paging buttons on the ContosoUniversity web page.
+    They can be disabled if the HasPreviousPage or HasNextPage bools return false.
+-->
+@{
+    var prevDisabled = !Model.Students.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Students.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Students.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Index"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Students.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
